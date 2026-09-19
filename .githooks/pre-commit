@@ -1,0 +1,46 @@
+#!/bin/sh
+# Assayance 自己的门禁：教义不自证，就不许提交。
+set -u
+cd "$(dirname "$0")/.." || exit 1
+
+if [ -n "${PYTHON:-}" ]; then
+  if ! command -v "$PYTHON" >/dev/null 2>&1; then
+    echo "pre-commit: PYTHON=$PYTHON not found; refusing to commit unverified" >&2
+    exit 1
+  fi
+  py="$PYTHON"
+else
+  py=""
+  for cand in python3 python; do
+    if command -v "$cand" >/dev/null 2>&1; then py="$cand"; break; fi
+  done
+  if [ -z "$py" ]; then
+    echo "pre-commit: no python interpreter found; refusing to commit unverified" >&2
+    exit 1
+  fi
+fi
+
+fail=0
+run() {
+  label="$1"; shift
+  if [ ! -f "$1" ]; then
+    echo "pre-commit: [MISSING] $label -> $1" >&2
+    fail=1; return
+  fi
+  if out=$("$py" "$@" 2>&1); then
+    echo "pre-commit: ok   $label"
+  else
+    echo "pre-commit: [FAIL] $label" >&2
+    printf '%s\n' "$out" | sed 's/^/    /' >&2
+    fail=1
+  fi
+}
+
+run "doctrine selftest" tools/check-doctrine.py --selftest
+run "doctrine check"    tools/check-doctrine.py
+
+if [ "$fail" -ne 0 ]; then
+  echo "pre-commit: blocked — fix the failures above, do not bypass." >&2
+  exit 1
+fi
+exit 0

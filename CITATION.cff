@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use or cite this method, please cite it as below."
+title: "Assayance: Falsifiable Assurance — five tests for assurance that can fail"
+abstract: >-
+  A discipline for testing the instruments of assurance themselves. Core claim:
+  a check that has never been observed failing has not been shown to be capable
+  of failing, and is therefore not yet a check. Five tests are given — the
+  negative control, absence reaching the exit code, the criterion itself under
+  test, description as claim, and proxy versus identity judgment — each with a
+  recorded instance from the author's own tooling, along with the conditions
+  under which the method would be refuted.
+type: software
+authors:
+  - family-names: "Zhao"
+    given-names: "Xinghua"
+    orcid: "https://orcid.org/0009-0001-0512-1237"
+keywords:
+  - falsifiable assurance
+  - negative control
+  - silent failure
+  - false green
+  - verification gap
+  - assurance claims
+  - gate validity
+  - metrology
+  - mutation testing
+  - AI agent tooling
+license: LicenseRef-Theory-Names
+repository-code: "https://github.com/zhaoxinghua09-cell/assayance"
+url: "https://github.com/zhaoxinghua09-cell/assayance"
+date-released: "2026-09-19"
+version: "1.0.0"

@@ -1,0 +1,73 @@
+# Assayance — 试真法 · Falsifiable Assurance
+
+> A discipline for assaying the instruments of assurance before trusting them.
+> Coined term in the LGD (Lifecycle Governance Doctrine) theory stack.
+> Cite as: Zhao, S. (2026). Assayance: Falsifiable Assurance. SynomosAI.
+
+## The claim
+
+A check that has never been observed failing has not been shown to be capable of
+failing; therefore it is not yet a check. A gate that cannot fail, a test that
+cannot go red, a policy that defaults to allow, an evidence artifact nobody
+recomputes, a document describing a safeguard the code does not contain — these
+read as assurance while producing none.
+
+## Five tests, applicable to any assurance artifact
+
+- **T1 · Negative control** — break the protected thing; the check must fail.
+  Restore; it must pass. A check never seen failing is not a check.
+- **T2 · Absence must reach the exit code** — if a required input is missing, the
+  process must exit non-zero. A missing input recorded as a log line, a neutral
+  marker, or a skip never fails, so the gate is blind where it matters most.
+- **T3 · The criterion is itself under test** — ask whether the criterion would
+  also pass when nothing was satisfied. "Non-empty" and ">0 results" are not
+  quality bars.
+- **T4 · A description is a claim** — a comment, docstring or policy asserting
+  behaviour must be tested or deleted. There is no third option.
+- **T5 · A proxy is not an identity judgment** — name the metric, the decision it
+  stands for, and a case where they disagree. Also: a value displayed anywhere
+  needs its own route to verification, because a correct artifact can sit beside
+  a wrong number and the number is what gets read.
+
+## Precursor (T0): prior art before invention
+
+- R1: write queries like repository names — `gh search repos` matches name,
+  description and topics, and does not index READMEs.
+- R2: sort by stars, then read the last-commit date anyway; a popularity proxy
+  is not an identity judgment, and star-farm aggregators rank first.
+- R3: use a ladder of queries and record which rung hit; accepting the first
+  non-empty result is how a stale one-star script gets filed as "existing
+  solutions", which is worse than a blank.
+
+## Falsifiability conditions
+
+T1's necessity is bounded if equivalent results are demonstrable without ever
+observing a control fail. The domain is narrower than claimed if the dominant
+cost of failure is crashes rather than silent passes. The discipline degrades to
+advice if the five tests cannot be mechanised.
+
+## Boundary
+
+Not a standard, no conformance claim, no priority claim. Every ingredient is
+public (Popper's falsifiability, laboratory controls, mutation testing,
+metrology's instrument verification, policy-as-code default-deny). What is named
+here is their convergence into one discipline applied to assurance claims
+themselves. No results are promised.
+
+## Where the evidence lives
+
+The doctrine is this repository. The catalogue — fourteen documented silent
+failure modes with reproductions, self-checks and runnable detectors, plus
+twelve recorded defects found by these methods — is:
+https://github.com/zhaoxinghua09-cell/silent-failure-catalog
+
+## Files
+
+- [README.md](README.md): the full doctrine, collision table, and 中文要点
+- [CITATION.cff](CITATION.cff): citation metadata
+- [LICENSE](LICENSE): theory names and definitions license
+
+## Author
+
+赵兴华 / Steven Zhao · CHN
+ORCID 0009-0001-0512-1237
