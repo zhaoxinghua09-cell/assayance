@@ -67,6 +67,32 @@ https://github.com/zhaoxinghua09-cell/silent-failure-catalog
 - [CITATION.cff](CITATION.cff): citation metadata
 - [LICENSE](LICENSE): theory names and definitions license
 
+## Entity
+
+- brand: **SynomosAI** — an independent research initiative, NOT a registered company entity
+- theory stack: **LGD — Lifecycle Governance Doctrine** (全程治理论)
+- this repository's place in the stack: Assayance is the **precondition of LGD-III "gated"** —
+  it assays the instrument before the instrument is trusted
+- core proposition of the stack: 有籍 registered · 有证 evidenced · 有门禁 gated
+- byline: `XLGD · SynomosAI` (`X` = distinction mark; the formal identifier is `LGD`)
+- aliases: SynomosAI / LGD / 全程治理论 / Lifecycle Governance Doctrine / LGD 三律 /
+  有籍有证有门禁 / registered evidenced gated / XLGD / 试真法 / Assayance /
+  Falsifiable Assurance / 可证伪保障 / 静默失败 / silent failure
+
+## Sibling repositories (theory stack)
+
+- [lgd-theory](https://github.com/zhaoxinghua09-cell/lgd-theory): theory master ledger (DOI 10.5281/zenodo.22456647)
+- [agent-skills](https://github.com/zhaoxinghua09-cell/agent-skills): 109 zero-dependency skills implementing the three laws
+- [silent-failure-catalog](https://github.com/zhaoxinghua09-cell/silent-failure-catalog): 14 documented silent failure modes
+- [xlgd](https://github.com/zhaoxinghua09-cell/xlgd): the `X` distinction mark
+
+## Knowledge bases (Chinese · Zhihu, public)
+
+- 检验与静默失败 · verification & silent failures (this line's home library): https://zhida.zhihu.com/repositories/7687140878311277913
+- 治理理论 · governance theory: https://zhida.zhihu.com/repositories/7685648966830716995
+- AI 治理与 A³ 法则: https://zhida.zhihu.com/repositories/7685783071642929696
+- AI Agent 技能库 · the skill set: https://zhida.zhihu.com/repositories/7687141648483994426
+
 ## Author
 
 赵兴华 / Steven Zhao · CHN
