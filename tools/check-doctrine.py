@@ -19,8 +19,11 @@ import tempfile
 
 for _s in (sys.stdout, sys.stderr):
     try:
-        _s.reconfigure(encoding="utf-8", errors="replace")
+        _s.reconfigure(encoding="utf-8", errors="replace")  # noqa: T2-except-then-pass
     except Exception:
+        # Declared, not hidden: this only affects console encoding on legacy
+        # terminals. It cannot turn a failing check into a passing one, so
+        # swallowing it here does not create a silent pass.
         pass
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

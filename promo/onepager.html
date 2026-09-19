@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Assayance · 试真法 — 一页纸</title>
+<style>
+  :root{
+    --bg:#071726;
+    --bg2:#0B2136;
+    --card:#0E2438;
+    --line:rgba(45,212,191,.22);
+    --line2:rgba(148,180,199,.18);
+    --teal:#2DD4BF;
+    --teal-d:#14B8A6;
+    --ink:#E6F1F7;
+    --ink2:#9FB6C6;
+    --ink3:#6E8697;
+    --amber:#F0B429;
+    --wm:"XLGD · SynomosAI";
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-font-smoothing:antialiased}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Microsoft YaHei","PingFang SC","Hiragino Sans GB","Noto Sans SC",-apple-system,"Segoe UI",sans-serif;
+    font-size:15px;line-height:1.7;
+  }
+  .sheet{width:1200px;margin:0 auto;position:relative;overflow:hidden}
+  /* 防伪水印：整页平铺，低对比，不挡正文 */
+  .wm{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+  .wm span{
+    position:absolute;color:rgba(230,241,247,.032);
+    font-size:20px;font-weight:700;white-space:nowrap;
+    transform:rotate(-28deg);
+  }
+  .pad{padding:0 72px;position:relative;z-index:1}
+
+  /* ---------- HEADER ---------- */
+  header{
+    background:linear-gradient(135deg,#08243A 0%,#0B2136 45%,#0A2E3C 100%);
+    border-bottom:2px solid var(--teal-d);
+    padding:54px 72px 46px;position:relative;z-index:1;
+  }
+  .brandrow{display:flex;align-items:center;gap:14px;margin-bottom:30px}
+  .badge{
+    width:44px;height:44px;border-radius:50%;
+    border:2px solid var(--teal);display:grid;place-items:center;
+    font-weight:700;font-size:13px;color:var(--teal);letter-spacing:.5px;flex:none;
+  }
+  .brandtxt{font-size:13.5px;color:var(--ink2);letter-spacing:.6px}
+  .brandtxt b{color:var(--teal);font-weight:700}
+  h1{font-size:52px;font-weight:800;letter-spacing:-.5px;line-height:1.14}
+  h1 .en{color:var(--teal)}
+  .sub{margin-top:14px;font-size:17px;color:var(--ink2);letter-spacing:.4px}
+  .hook{
+    margin-top:30px;padding:22px 26px;border-left:4px solid var(--teal);
+    background:rgba(45,212,191,.07);border-radius:0 10px 10px 0;
+  }
+  .hook p{font-size:23px;font-weight:700;line-height:1.5}
+  .hook p em{font-style:normal;color:var(--teal)}
+
+  /* ---------- STATS ---------- */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:30px 72px 6px;position:relative;z-index:1}
+  .stat{background:var(--card);border:1px solid var(--line2);border-radius:12px;padding:18px 20px}
+  .stat .n{font-size:27px;font-weight:800;color:var(--teal);letter-spacing:-.5px}
+  .stat .l{font-size:12.5px;color:var(--ink3);margin-top:5px}
+
+  /* ---------- SECTION ---------- */
+  section{padding:38px 72px 4px;position:relative;z-index:1}
+  h2{
+    font-size:23px;font-weight:700;display:flex;align-items:center;gap:12px;margin-bottom:8px;
+  }
+  h2::before{content:"";width:5px;height:23px;background:var(--teal);border-radius:3px;flex:none}
+  h2 small{font-size:12.5px;font-weight:400;color:var(--ink3);letter-spacing:.4px}
+  .lead{color:var(--ink2);font-size:14.5px;margin:0 0 20px 17px}
+
+  /* ---------- 症状列表 ---------- */
+  .ills{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .ill{
+    background:var(--card);border:1px solid var(--line2);border-radius:10px;
+    padding:15px 18px 15px 44px;position:relative;font-size:14.5px;
+  }
+  .ill::before{
+    content:"";position:absolute;left:18px;top:21px;width:8px;height:8px;border-radius:50%;
+    background:var(--amber);
+  }
+  .ill b{color:#fff;font-weight:700}
+  .ills .full{grid-column:1/-1}
+
+  /* ---------- 三句主张 ---------- */
+  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .t3{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 20px}
+  .t3 .i{font-size:12px;color:var(--teal);font-weight:700;letter-spacing:1.5px;margin-bottom:10px}
+  .t3 h3{font-size:17px;font-weight:700;margin-bottom:8px}
+  .t3 p{font-size:13.5px;color:var(--ink2)}
+
+  /* ---------- 判据表 ---------- */
+  table{width:100%;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden}
+  th,td{padding:13px 16px;text-align:left;font-size:14px;vertical-align:top;border-bottom:1px solid var(--line2)}
+  thead th{background:rgba(45,212,191,.1);color:var(--teal);font-size:13px;font-weight:700;letter-spacing:.5px}
+  tbody tr:last-child td{border-bottom:none}
+  td.k{font-weight:700;color:#fff;white-space:nowrap}
+  td.k span{display:block;font-size:11.5px;color:var(--teal);font-weight:600;letter-spacing:.5px}
+  td.q{color:var(--ink2)}
+  tbody tr.t0 td{background:rgba(45,212,191,.05)}
+
+  /* ---------- 推论 ---------- */
+  .cor{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .cor div{
+    background:linear-gradient(135deg,rgba(45,212,191,.09),rgba(45,212,191,.02));
+    border:1px solid var(--line);border-radius:12px;padding:22px 24px;
+  }
+  .cor b{font-size:18px;display:block;margin-bottom:8px;color:#fff}
+  .cor p{font-size:13.5px;color:var(--ink2)}
+
+  /* ---------- 安装 ---------- */
+  .steps{display:grid;gap:14px}
+  .step{display:grid;grid-template-columns:40px 1fr;gap:16px;align-items:start;
+        background:var(--card);border:1px solid var(--line2);border-radius:12px;padding:18px 20px}
+  .step .num{
+    width:32px;height:32px;border-radius:50%;background:var(--teal);color:#071726;
+    display:grid;place-items:center;font-weight:800;font-size:15px;
+  }
+  .step h4{font-size:16px;font-weight:700;margin-bottom:4px}
+  .step p{font-size:13.5px;color:var(--ink2);margin-bottom:8px}
+  code,pre{font-family:Consolas,"Cascadia Mono",Menlo,monospace}
+  pre{
+    background:#04121D;border:1px solid var(--line2);border-radius:8px;
+    padding:12px 15px;overflow-x:auto;
+  }
+  pre code{font-size:13px;color:var(--teal);line-height:1.75}
+  pre code .c{color:var(--ink3)}
+  p code{background:#04121D;border:1px solid var(--line2);border-radius:4px;
+         padding:1px 6px;font-size:12.5px;color:var(--teal)}
+
+  /* ---------- 模型表 ---------- */
+  .yes{color:var(--teal);font-weight:700}
+  .no{color:var(--amber);font-weight:700}
+
+  /* ---------- 边界 ---------- */
+  .bound{background:rgba(240,180,41,.06);border:1px solid rgba(240,180,41,.28);
+         border-radius:12px;padding:20px 24px}
+  .bound h3{font-size:15px;color:var(--amber);margin-bottom:10px;font-weight:700}
+  .bound li{font-size:13.5px;color:var(--ink2);margin-left:18px;margin-bottom:5px}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    margin-top:46px;background:#051320;border-top:2px solid var(--teal-d);
+    padding:34px 72px 40px;position:relative;z-index:1;
+  }
+  .links{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
+  .link{background:rgba(45,212,191,.05);border:1px solid var(--line);border-radius:10px;padding:15px 18px}
+  .link .lb{font-size:11.5px;color:var(--teal);font-weight:700;letter-spacing:1px;margin-bottom:5px}
+  .link .lu{font-size:14.5px;font-weight:700;word-break:break-all}
+  .link .ld{font-size:12.5px;color:var(--ink3);margin-top:3px}
+  .sig{border-top:1px solid var(--line2);padding-top:18px;display:flex;justify-content:space-between;
+       align-items:flex-end;gap:24px}
+  .sig .who{font-size:13.5px;color:var(--ink2);line-height:1.85}
+  .sig .who b{color:#fff}
+  .sig .mark{font-size:12px;color:var(--ink3);text-align:right;line-height:1.8}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="wm" aria-hidden="true">
+    <span style="top:180px;left:40px">XLGD · SynomosAI</span>
+    <span style="top:520px;left:-60px">XLGD · SynomosAI</span>
+    <span style="top:900px;left:120px">XLGD · SynomosAI</span>
+    <span style="top:1280px;left:-30px">XLGD · SynomosAI</span>
+    <span style="top:1660px;left:80px">XLGD · SynomosAI</span>
+    <span style="top:2040px;left:-50px">XLGD · SynomosAI</span>
+    <span style="top:2420px;left:100px">XLGD · SynomosAI</span>
+    <span style="top:2800px;left:-40px">XLGD · SynomosAI</span>
+    <span style="top:3180px;left:60px">XLGD · SynomosAI</span>
+  </div>
+
+  <header>
+    <div class="brandrow">
+      <div class="badge">试真</div>
+      <div class="brandtxt"><b>XLGD 理论线</b> · 可证伪保障法 · TH-META-014</div>
+    </div>
+    <h1>Assayance <span class="en">·</span> 试真法</h1>
+    <div class="sub">Falsifiable Assurance ｜ 一套用来检查「检查」本身的五条判据</div>
+    <div class="hook">
+      <p>没被看见失败过的检查，<em>还不算检查</em>。</p>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="n">5 条</div><div class="l">判据 · T1–T5（前置步 T0）</div></div>
+    <div class="stat"><div class="n">14 条</div><div class="l">静默失败模式（证据库待公开）</div></div>
+    <div class="stat"><div class="n">零 token</div><div class="l">检测器纯 Python · 不调模型</div></div>
+    <div class="stat"><div class="n">可证伪</div><div class="l">它自己写明什么能推翻它</div></div>
+  </div>
+
+  <section>
+    <h2>它治的病 <small>为什么你已有的保障可能是零</small></h2>
+    <p class="lead">每一份保障声明都在许同一个诺：<b>「这里要是坏了，我会告诉你。」</b>这个诺言可以检验 —— 而几乎没人检验它。</p>
+    <div class="ills">
+      <div class="ill"><b>门禁恒绿</b> —— 从没见过它红，包括缺陷上线那一次</div>
+      <div class="ill"><b>测试永远通过</b> —— 因为它从未被观察到失败</div>
+      <div class="ill"><b>策略默认放行</b> —— 跳过不计数，不计入退出码</div>
+      <div class="ill"><b>证据没人重算</b> —— 文件在，结论没人复算过</div>
+      <div class="ill full"><b>文档写着代码里没有的防线</b> —— 那句话读起来像保障，实际不存在</div>
+      <div class="ill full" style="border-color:rgba(240,180,41,.35)"><b>共同点：它们都看起来像保障，实际产出为零。</b>而沉默是最贵的输出 —— 因为它和成功长得一模一样。</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>核心主张 <small>三句话就能讲完</small></h2>
+    <div class="three">
+      <div class="t3">
+        <div class="i">01</div>
+        <h3>先化验你的仪器</h3>
+        <p>所有质量方法都在化验被测对象；试真法第一件事是化验<b style="color:#fff">测量用的那台仪器</b>。拿金属在石头上划一道 —— 看那道划痕对不对。</p>
+      </div>
+      <div class="t3">
+        <div class="i">02</div>
+        <h3>每个"没问题"都要配对照</h3>
+        <p>把它要防的东西<b style="color:#fff">故意弄坏</b>，它必须红。从没红过的检查，无法证明它<b style="color:#fff">能</b>红。</p>
+      </div>
+      <div class="t3">
+        <div class="i">03</div>
+        <h3>缺失必须吵</h3>
+        <p>该有的东西没有时，必须走非零退出。被记成一行日志、一个跳过、一个"待办"的缺失，<b style="color:#fff">永远不会响</b>。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>五条判据 <small>对着任何保障物件跑一遍 —— 门禁 / 测试 / 策略 / 证据 / 文档 / 一句声明</small></h2>
+    <table>
+      <thead>
+        <tr><th style="width:200px">判据</th><th>要问的那句话</th></tr>
+      </thead>
+      <tbody>
+        <tr class="t0"><td class="k">T0 前置步<span>先查，再造</span></td><td class="q">动手前先查有没有现成方案 —— 检索词要<b>像仓库名</b>；排序后<b>必须看最近提交时间</b>；用检索词阶梯并记录是哪一条命中的。</td></tr>
+        <tr><td class="k">T1 反照<span>负面结论要配正面证据</span></td><td class="q">把它要防的东西弄坏，它会不会红？<b>从没红过的检查，无法证明它能红。</b></td></tr>
+        <tr><td class="k">T2 落码<span>缺失要走失败信道</span></td><td class="q">该有的东西没有时，<b>调用方读到的是什么</b>？答不出"失败"的，就是装饰。</td></tr>
+        <tr><td class="k">T3 审据<span>验收标准本身要被检</span></td><td class="q">什么都不满足时，这条判据会不会<b>也</b>通过？会，那就是尺子错了，不是输入错了。</td></tr>
+        <tr><td class="k">T4 兑现<span>描述即声明</span></td><td class="q">注释 / docstring 声称的行为，<b>要么测它，要么删它</b> —— 没有第三条路。</td></tr>
+        <tr><td class="k">T5 辨身<span>代理指标不是判断</span></td><td class="q">你用哪个便宜数字代替了决定？<b>它和那个决定在什么情况下会不一致？</b></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>两条最贵的推论 <small>都是踩出来的，不是想出来的</small></h2>
+    <div class="cor">
+      <div>
+        <b>跑通 ≠ 报对</b>
+        <p>产物是对的，打印出来的数是错的 —— 而<b style="color:#fff">被读走的是那个数</b>。任何一个被展示的值，都要有自己独立的核验路径。</p>
+      </div>
+      <div>
+        <b>缺失必须吵</b>
+        <p>沉默是最贵的输出，因为它<b style="color:#fff">和成功长得一模一样</b>。抑制与跳过不是"容忍"，是门禁上的洞 —— 必须计数并上报。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>怎么装 <small>三条路径，按需要选</small></h2>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <div>
+          <h4>读教义（零依赖，先看懂再动手）</h4>
+          <p>仓库里是「为什么这五条成立」和「什么能推翻它」，还有一个给 AI 读的骨架文件。</p>
+          <pre><code>git clone https://github.com/zhaoxinghua09-cell/assayance
+<span class="c"># 人类读 README.md ｜ AI 读 llms.txt</span></code></pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <div>
+          <h4>跑仓里自带的自检器（这条最能说明问题）</h4>
+          <p>教义必须能检查它自己 —— 仓里那个自检器，就是拿这五条判据量它自己的。<b style="color:#fff">先让它失败给你看，再信它。</b></p>
+          <pre><code>cd assayance
+python tools/check-doctrine.py --selftest   <span class="c"># 先证明它真的会报错</span>
+python tools/check-doctrine.py              <span class="c"># 再对真实文件跑</span></code></pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <div>
+          <h4>当清单用（不装任何东西）</h4>
+          <p>把五条判据贴进你的评审模板、PR 检查项、Code Review 清单。十分钟能跑完一轮。</p>
+          <pre><code><span class="c"># 10 分钟自检</span>
+1. 列出你依赖的全部保障物件（门禁/测试/策略/徽章/证据文件）
+2. 逐个弄坏它要防的东西 —— 它红了吗？   (T1)
+3. 每个必需输入缺失时，失败信道里有东西吗？ (T2)
+4. 每个阈值：什么都不满足时会不会也通过？ (T3)
+5. grep 文档里的"必要性"声明，挑一条弄坏它 (T4)
+6. 挑一个你上报的指标，找一个它和决定不一致的场景 (T5)</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>适用于哪些模型 <small>答案可能和你预期的不一样</small></h2>
+    <p class="lead">试真法<b>不调用任何模型</b>，也不挑模型 —— 它约束的对象是「保障声明」，不是模型。所以它的兼容面比一个 prompt 工具宽得多。</p>
+    <table>
+      <thead><tr><th style="width:330px">环境</th><th style="width:110px">支持</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td class="k">任意 LLM / Agent<span>Claude · GPT · Gemini · DeepSeek · Qwen · GLM · Kimi …</span></td><td class="yes">✅ 完全支持</td><td class="q">五条判据与模型无关，可作为评审清单交给任何 agent 执行</td></tr>
+        <tr><td class="k">本地离线模型<span>Ollama · llama.cpp · vLLM …</span></td><td class="yes">✅ 完全支持</td><td class="q">检测器是纯 Python，<b>零 token、零联网</b>，断网可用</td></tr>
+        <tr><td class="k">完全不接模型<span>纯人工评审</span></td><td class="yes">✅ 完全支持</td><td class="q">全部检测器可独立运行；判据本身就是给人用的</td></tr>
+        <tr><td class="k">非 Python 项目<span>JS / Go / Rust / 配置</span></td><td class="yes">✅ 判据适用</td><td class="q">五条判据语言无关；可运行检测器当前以 Python 实现，其余语言需自建</td></tr>
+        <tr><td class="k">语言 / 平台</td><td class="yes">✅</td><td class="q">Python 3.9+；Windows / macOS / Linux</td></tr>
+        <tr><td class="k">它会替你提高模型表现吗</td><td class="no">❌ 不会</td><td class="q">它不是 prompt 技巧。它只管一件事：你的保障声明能不能被证伪</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>边界 <small>写在最显眼处，而不是脚注里</small></h2>
+    <div class="bound">
+      <h3>别夸大它 —— 这三条是硬边界</h3>
+      <li><b>不声称首创。</b>每个零件都是公开的旧东西：可证伪性是波普尔的，对照是实验室的，故意弄坏是变异测试的，器具检定是计量学的，默认拒绝是策略即代码的。这里命名的，是它们<b>收敛成一套用来管"保障声明"本身的规矩</b>这件事。</li>
+      <li><b>不是标准，不声称合规。</b>不对应任何法规、框架或规范的符合性。</li>
+      <li><b>不承诺任何效果。</b>没有缺陷逃逸率、没有成本节省、没有通过率。这套方法唯一的产物，是一种<b>更强的"不"</b>。</li>
+      <li style="margin-top:8px"><b>可证伪条件（这也是它的一部分）：</b>若有人能在从未观察过对照失败的情况下，以同样比率抓住同类静默失败 → T1 的必要性受限；若实践中的主要代价是崩溃而非静默通过 → 适用范围比声称的窄；若这五条无法机械化 → 它退化为建议。</li>
+    </div>
+  </section>
+
+  <footer>
+    <div class="links">
+      <div class="link">
+        <div class="lb">教 义 · 已公开</div>
+        <div class="lu">github.com/zhaoxinghua09-cell/assayance</div>
+        <div class="ld">五条判据 · 为何成立 · 什么能证伪它 · 自带自检器</div>
+      </div>
+      <div class="link">
+        <div class="lb">证 据 · 待公开</div>
+        <div class="lu">silent-failure-catalog</div>
+        <div class="ld">14 条静默失败模式 · 可运行检测器 · 五道门禁</div>
+      </div>
+    </div>
+    <div class="sig">
+      <div class="who">
+        <b>赵兴华 / Steven Zhao</b> · 独立智能体开发者<br>
+        ORCID 0009-0001-0512-1237 ｜ GitHub @zhaoxinghua09-cell<br>
+        <span style="font-size:12.5px;color:#6E8697">XLGD 理论线 · 理论编号 TH-META-014 · 2026-09-19 定名</span>
+      </div>
+      <div class="mark">
+        XLGD · SynomosAI<br>
+        <span style="font-size:11.5px">署名可替换：平台水印请按发布渠道替换本行</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
