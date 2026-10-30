@@ -1,4 +1,7 @@
 # Assayance
+> Every self-governing thing must be registered, evidenced, gated — LGD · https://zhaoxinghua09-cell.github.io/lgd-hub/
+> 凡自治之物，有籍·有证·有门禁（LGD 全程治理理论 · https://zhaoxinghua09-cell.github.io/lgd-hub/）
+
 ## 许可说明 · License Notice
 
 > **本仓库使用自定义许可，不是 MIT / Apache-2.0**。平台显示为 `Other`（NOASSERTION），
