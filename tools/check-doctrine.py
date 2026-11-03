@@ -7,6 +7,7 @@
   C1 判据在场     T0..T5 在 README 与 llms.txt 中都出现，且编号集合一致
   C2 两处一致     README 与 llms.txt 的判据标题不得漂移（防 T4 违反）
   C3 品牌隔离     理论线不得出现域品牌串（医械线在此不可见）
+                  唯一豁免：显式成对的 brand-notice 声明块
   C4 无占位残留   TODO/TBD/FIXME/XXX/【】 等未完成标记不得进主干
 
 每一条都能被判 False —— 这正是本文件存在的意义。
@@ -40,6 +41,29 @@ PLACEHOLDER = [
 ]
 
 CHECKED_FILES = ["README.md", "llms.txt", "LICENSE", "CITATION.cff"]
+
+# C3 的唯一豁免：显式成对标记的品牌状态声明块。
+# 理由：README 必须声明品牌状态，而声明本身必须能写出品牌名——把这两条要求
+# 同时满足，就只能给"声明"这一个语境开一个可判定的口子。
+# 豁免必须成对：未闭合的 begin 不豁免（否则文件尾补一个 begin 就能静默逃检）。
+BRAND_NOTICE_BEGIN = "<!-- brand-notice:begin -->"
+BRAND_NOTICE_END = "<!-- brand-notice:end -->"
+
+
+def strip_brand_notice(txt):
+    """移除成对的 brand-notice 块；未闭合的 begin 原样保留（fail-closed）。"""
+    out, i = [], 0
+    while True:
+        b = txt.find(BRAND_NOTICE_BEGIN, i)
+        if b < 0:
+            out.append(txt[i:])
+            return "".join(out)
+        e = txt.find(BRAND_NOTICE_END, b + len(BRAND_NOTICE_BEGIN))
+        if e < 0:
+            out.append(txt[i:])
+            return "".join(out)
+        out.append(txt[i:b])
+        i = e + len(BRAND_NOTICE_END)
 
 
 def read(p):
@@ -120,12 +144,18 @@ def check_doctrine(root):
         if txt is None:
             problems.append("C3 缺文件 %s" % fn)
             continue
-        low = txt.lower()
+        body = strip_brand_notice(txt)
+        low = body.lower()
         hit = [b for b in BANNED_BRAND if b in low]
+        if not hit and body != txt:
+            notes.append("C3 %s 品牌串仅出现在显式声明块内（已豁免）" % fn)
         if hit:
             problems.append("C3 %s 出现域品牌串：%s（理论线必须隔离）" % (fn, ", ".join(sorted(set(hit)))))
     if not any(p.startswith("C3") for p in problems):
-        notes.append("C3 四文件零品牌串")
+        if any(n.startswith("C3 ") and n.endswith("（已豁免）") for n in notes):
+            notes.append("C3 正文零品牌串（声明块已豁免）")
+        else:
+            notes.append("C3 四文件零品牌串")
 
     for fn in ("README.md", "llms.txt"):
         txt = read(os.path.join(root, fn))
@@ -198,6 +228,12 @@ def cmd_selftest():
     run("llms 缺 T2", "C1 llms.txt 缺判据", llms=noT2)
     run("标题漂移", "C2", readme=drift_r, llms=drift_l)
     run("品牌串混入 LICENSE", "C3 LICENSE", lic="powered by MedXpert")
+    notice_ok = (full_r + "\n\n" + BRAND_NOTICE_BEGIN
+                 + "\n- **品牌状态限定**：MedXpert 为相关项目标识，未申请实体注册。\n"
+                 + BRAND_NOTICE_END + "\n")
+    run("品牌串在显式声明块内（应豁免）", "__never__", readme=notice_ok)
+    run("未闭合的声明块不豁免", "C3 README",
+        readme=full_r + "\n\n" + BRAND_NOTICE_BEGIN + "\nMedXpert\n")
     run("占位残留", "C4 README", readme=full_r + "\n\nTODO finish")
     run("正文里的编号不算标题（防错位误报）", "__never__",
         readme=full_r.replace("### T5", "### T5") + "\n\nSee (T5) in prose for details.")
