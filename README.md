@@ -14,9 +14,11 @@
   与权利人「赵兴华 / Steven Zhao·China」。
 - **完整条款**：见仓库根目录 [LICENSE](LICENSE)。
 - **联系**：zhaoxinghua06@126.com ｜ ORCID 0009-0001-0512-1237
+<!-- brand-notice:begin -->
 - **品牌状态限定**：MedXpert、SynomosAI、LGD 等为相关项目标识，
   **均未申请实体注册、未申请商标注册**；出现仅作来源标识，
   不构成对法人实体或商标权的任何主张。
+<!-- brand-notice:end -->
 - **免责**：本仓库内容不构成法规意见或注册代理服务；关键数据以监管机构最新发布为准。
 
 ---
@@ -253,4 +255,21 @@ Theory names and definitions — all rights reserved by the author. Any citation
 
 **可证伪条件**（这也是它的一部分）：如果有人在从没观察过对照失败的情况下，能以同样比率抓住同类静默失败 → T1 的必要性受限；如果实践中主要代价是崩溃而非静默通过 → 适用范围比声称的窄；如果这五条无法机械化 → 它退化为建议。
 
-**已发布的地图**｜**教义**在本仓（五条判据 + 为何成立 + 什么能证伪它）；**证据**在 [silent-failure-catalog](https://github.com/zhaoxinghua09-cell/silent-failure-catalog)（14 条静默失败模式 + 可运行检测器 + 12 条带对照记录的自抓缺陷）。
+**已发布的地图**｜**教义**在本仓（五条判据 + 为何成立 + 什么能证伪它）；**证据**在 [silent-failure-catalog](https://github.com/zhaoxinghua09-cell/silent-failure-catalog)（15 条静默失败模式 + 可运行检测器 + 12 条带对照记录的自抓缺陷）。
+
+---
+
+## 本仓的自我检查 · Self-check
+
+本仓带一个**针对自身**的检查器 [`tools/check-doctrine.py`](tools/check-doctrine.py)——这是 T3（验收标准本身也是被检对象）在本仓的落地，不是附赠品：
+
+```bash
+python tools/check-doctrine.py             # HEAD 上应输出 clean，exit 0
+python tools/check-doctrine.py --selftest  # 阳性/阴性对照，证明四条检查真的会红
+```
+
+四条检查：**C1** 判据在场（T0–T5 在 README 与 llms.txt 中都出现且编号集合一致）／**C2** 两处一致（判据标题不得漂移）／**C3** 品牌隔离（理论线正文不得出现域品牌串）／**C4** 无占位残留。
+
+**C3 的唯一豁免**是显式成对标记的品牌状态声明块（`<!-- brand-notice:begin -->` … `<!-- brand-notice:end -->`）。原因是两条要求在此处正面冲突：README 必须声明品牌状态，而那句声明必须写得出品牌名。豁免因此被设计成**成对且可判定**的——**未闭合的 `begin` 不豁免**，整段按正文处理，否则在文件尾补一个 `begin` 就能静默逃检。
+
+如果你在自己的机器上跑到红，请把输出原样贴成 issue；**这个仓库承诺的不是"检查通过"，而是"检查会红"**。前者是装饰，后者才是检查。
